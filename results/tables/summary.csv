@@ -1,0 +1,5 @@
+run,device,missing_rate,noise_std,solver,epochs,resnet_val_mse,neuralode_val_mse
+ablation_missing_0,cuda,0.0,0.05,rk4,15,0.14513481656710306,0.011393611629803976
+ablation_solver_dopri5,cuda,0.3,0.05,dopri5,15,0.11158138513565063,0.011063147025803724
+base,cuda,0.3,0.05,rk4,15,0.11158138513565063,0.011062409418324629
+ablation_missing_60,cuda,0.6,0.05,rk4,15,0.10993301868438721,0.010555760314067205
