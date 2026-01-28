@@ -1,51 +1,70 @@
-# Neural ODEs vs ResNets under Irregular Sampling — A Toy Benchmark (PyTorch)
+\# Neural ODEs vs ResNets under Irregular Sampling (Toy Study)
 
-A small, reproducible experimental study comparing a discrete-time ResNet baseline against a continuous-time Neural ODE on synthetic damped-oscillator trajectories with missing/irregular observations.
 
-This project is structured as a research artifact: **baselines + metrics + ablations + plots + reproducibility**.
 
----
+A small, reproducible research artifact comparing a discrete-time \*\*ResNetStep\*\* baseline vs a continuous-time \*\*Neural ODE\*\* under \*\*irregular sampling\*\* and \*\*controlled missingness\*\* on a synthetic damped oscillator dataset.
 
-## Problem
-Neural ODEs provide a continuous-time parameterization of dynamics and are often motivated by irregularly sampled time series. However, it is not always clear when they outperform simpler discrete-time baselines (e.g., residual networks) under a controlled compute budget.
 
-We run a controlled benchmark on synthetic trajectories where we can explicitly vary **missingness** and **solver choice**.
 
----
+\- \*\*GitHub:\*\* https://github.com/albashawalid05-netizen/neural-ode-vs-resnet  
 
-## Method
-### Dataset (Synthetic ODE)
-We generate trajectories from a damped oscillator:
-- state: \(x_t = (position, velocity)\)
-- Gaussian observation noise
-- an observation mask to simulate missing/irregular measurements
+\- \*\*Mini-paper (PDF):\*\* paper/mini\_paper\_clean.pdf
 
-### Models (Baselines)
-- **ResNetStep** (discrete-time): predicts next step with a residual update  
-  \(x_{t+1} = x_t + f(x_t)\)
-- **Neural ODE** (continuous-time): learns \(dx/dt = f(x)\) and integrates with `torchdiffeq.odeint`
 
-### Objective
-Masked validation **MSE** computed only on observed (non-missing) points.
 
 ---
 
-## Experiments
-We report masked validation MSE and run the following:
-- **Base:** `missing_rate=0.3`, `solver=rk4`
-- **Ablation 1 (Solver):** `rk4` vs `dopri5`
-- **Ablation 2 (Missingness):** `missing_rate ∈ {0.0, 0.6}` (solver fixed to rk4)
 
-### Outputs
-- Metrics summary: `results/tables/summary.csv`
-- Per-run JSON logs: `results/tables/*_metrics.json`
-- Figures:
-  - `results/figures/mse_by_run.png`
-  - `results/figures/mse_vs_missing_rate.png`
+
+\## Repo structure
+
+
+
+\- `configs/` - base run + ablation configs  
+
+\- `src/`
+
+&nbsp; - `data.py` - synthetic damped oscillator + missingness mask
+
+&nbsp; - `models.py` - ResNetStep + NeuralODE
+
+&nbsp; - `train.py` - trains from a config; saves JSON results per run
+
+&nbsp; - `eval.py` - aggregates results; writes `summary.csv`
+
+&nbsp; - `plots.py` - generates PNG figures
+
+\- `results/`
+
+&nbsp; - `tables/summary.csv`
+
+&nbsp; - `figures/mse\_by\_run.png`
+
+&nbsp; - `figures/mse\_vs\_missing\_rate.png`
+
+\- `paper/mini\_paper\_clean.pdf`
+
+
 
 ---
 
-## Quickstart
-### Install
+
+
+\## Reproduce (Windows / PowerShell)
+
+
+
+\### Train (base + ablations)
+
 ```bash
-pip install -r requirements.txt
+
+python -m src.train --config .\\configs\\base.yaml
+
+python -m src.train --config .\\configs\\ablation\_solver\_dopri5.yaml
+
+python -m src.train --config .\\configs\\ablation\_missing\_0.yaml
+
+python -m src.train --config .\\configs\\ablation\_missing\_60.yaml
+
+
+
