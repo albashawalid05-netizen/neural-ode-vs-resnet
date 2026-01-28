@@ -3,3 +3,8 @@
 .venv/
 venv/
 .ipynb_checkpoints/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
