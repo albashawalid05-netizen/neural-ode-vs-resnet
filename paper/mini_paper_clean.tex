@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+﻿\documentclass[10pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{times}
 \usepackage{microtype}
@@ -115,7 +115,7 @@ Switching the Neural ODE solver from RK4 to DOPRI5 yields nearly identical MSE (
 Across missingness rates 0.0, 0.3, and 0.6, the Neural ODE remains near $\approx 0.011$ MSE, while the ResNet baseline ranges from 0.1099 to 0.1451. This suggests the continuous-time formulation provides robustness to irregular information availability.
 
 \section{Error analysis}
-Qualitatively, the ResNet’s larger errors are consistent with a discrete update rule that does not explicitly model variable time gaps. When observations are sparse or irregular, a discrete step model can implicitly assume a fixed $\Delta t$ or rely on the network to infer time scaling from masked inputs, which can lead to:
+Qualitatively, the ResNetâ€™s larger errors are consistent with a discrete update rule that does not explicitly model variable time gaps. When observations are sparse or irregular, a discrete step model can implicitly assume a fixed $\Delta t$ or rely on the network to infer time scaling from masked inputs, which can lead to:
 \begin{itemize}
   \item \textbf{Phase drift:} small per-step inaccuracies accumulate into large trajectory misalignment.
   \item \textbf{Damping mismatch:} discrete updates may under/over-estimate decay depending on gap size.
@@ -144,9 +144,13 @@ Model & AUROC $\uparrow$ & AUPRC $\uparrow$\\
 GRU & 0.804 $\pm$ 0.032 & 0.477 $\pm$ 0.059\\
 LastObsMLP & 0.817 $\pm$ 0.063 & 0.485 $\pm$ 0.137\\
 GRU-D & 0.829 $\pm$ 0.034 & 0.499 $\pm$ 0.112\\
+ODE-RNN & 0.709 $\pm$ 0.080 & 0.334 $\pm$ 0.117 \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+On PhysioNet 2012, we include an ODE-based baseline (ODE-RNN) alongside strong discrete-time baselines (GRU, GRU-D). Across 3 seeds (95\% CI), GRU-D performs best, while ODE-RNN is less competitive under this training budget, highlighting that handling missingness explicitly can matter more than continuous-time inductive bias in this setting.
+
 
 \paragraph{Failure mode.}
 We stratify test AUROC by observation-count quartile and compare all three models, highlighting robustness under sparse measurements.
@@ -173,3 +177,4 @@ Future work: add time-aware discrete baselines (e.g., $\Delta t$-conditioned Res
 \noindent\textbf{Code and artifacts:} \href{\GithubURL}{\GithubURL} (configs, training logs, summary table, and figures).
 
 \end{document}
+
