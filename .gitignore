@@ -16,3 +16,16 @@ data/
 # Local run logs
 results/physio_runs/
 
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+
+# Local accidental paper copy at repo root
+mini_paper_clean.tex
+
+# PhysioNet run outputs (keep code, ignore generated artifacts)
+results/preds/
+results/figures/physio_auroc_by_obs_quartile_models.png
+results/tables/physio_auroc_by_obs_quartile_models.csv
