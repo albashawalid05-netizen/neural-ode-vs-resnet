@@ -5,6 +5,8 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{amsmath}
+\usepackage{amssymb}
+
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -123,6 +125,38 @@ Qualitatively, the ResNet’s larger errors are consistent with a discrete updat
 
 Neural ODEs instead integrate over the actual time interval. This tends to reduce sensitivity to irregular gaps and can better preserve continuous dynamics like oscillation phase and damping, especially when the underlying data truly follows smooth latent dynamics.
 
+\section{Real-data extension: PhysioNet 2012 ICU time series}
+To move beyond the toy oscillator, we add a real-world irregularly-sampled clinical benchmark from the PhysioNet/CinC 2012 Challenge (Set A). Each patient episode is a multivariate ICU time series with naturally irregular timestamps and missing values. We use the provided in-hospital mortality label and evaluate binary classification.
+
+\paragraph{Preprocessing.}
+We parse each patient file into $(t, x, m)$ where $t$ are observation times, $x \in \mathbb{R}^{T \times D}$ are normalized values, and $m \in \{0,1\}^{T \times D}$ is a missingness mask. We use a fixed split (train/val/test = 2800/600/600) with $D=23$ variables and report test AUROC and AUPRC.
+
+\paragraph{Baselines.}
+We compare (i) a GRU that ingests values, mask, and time gaps $\Delta t$; and (ii) a simple baseline that takes the last observed value per variable (plus mask) followed by an MLP.
+
+\begin{table}[t]
+\centering
+\caption{PhysioNet 2012 Set A mortality classification (test). Mean $\pm$ 95\% CI over 3 seeds.}
+\label{tab:physio}
+\begin{tabular}{lcc}
+\toprule
+Model & AUROC $\uparrow$ & AUPRC $\uparrow$\\
+\midrule
+GRU (values+mask+$\Delta t$) & 0.808 $\pm$ 0.012 & 0.468 $\pm$ 0.013\\
+LastObsMLP (last obs + mask) & 0.661 $\pm$ 0.008 & 0.266 $\pm$ 0.006\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Failure mode.}
+Performance increases with the amount of observed data per patient, indicating a clear failure mode under heavy missingness.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{../results/figures/physio_auroc_by_obs_quartile.png}
+\caption{GRU test AUROC stratified by observation-count quartile (fewer observations $\rightarrow$ harder cases).}
+\label{fig:physio_obs}
+\end{figure}
 \section{Limitations and future work}
 This study is intentionally minimal. Key limitations include:
 \begin{itemize}
@@ -138,3 +172,4 @@ Future work: add time-aware discrete baselines (e.g., $\Delta t$-conditioned Res
 \noindent\textbf{Code and artifacts:} \href{\GithubURL}{\GithubURL} (configs, training logs, summary table, and figures).
 
 \end{document}
+
