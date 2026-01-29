@@ -85,3 +85,8 @@ Remove-Item .\set-a\set-a -Recurse -Force -ErrorAction SilentlyContinue
 
 ```powershell
 python -m src.run_physio_suite --data_root data/physionet2012_raw --seeds 0 1 2 --epochs 10 --batch_size 64 --hidden 128
+
+## Paper
+mini paper (includes toy study and PhysioNet section): paper/mini_paper_clean.pdf
+Source: paper/mini_paper_clean.tex
+
