@@ -1,4 +1,4 @@
-﻿\documentclass[10pt]{article}
+\documentclass[10pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{times}
 \usepackage{microtype}
@@ -6,7 +6,6 @@
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{amssymb}
-
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -132,31 +131,33 @@ To move beyond the toy oscillator, we add a real-world irregularly-sampled clini
 We parse each patient file into $(t, x, m)$ where $t$ are observation times, $x \in \mathbb{R}^{T \times D}$ are normalized values, and $m \in \{0,1\}^{T \times D}$ is a missingness mask. We use a fixed split (train/val/test = 2800/600/600) with $D=23$ variables and report test AUROC and AUPRC.
 
 \paragraph{Baselines.}
-We compare (i) a GRU that ingests values, mask, and time gaps $\Delta t$; and (ii) a simple baseline that takes the last observed value per variable (plus mask) followed by an MLP.
+We compare: (i) a GRU baseline; (ii) a LastObsMLP baseline using last observed values; and (iii) GRU-D, which adds learned exponential decay toward feature means driven by time since last observation.
 
 \begin{table}[t]
 \centering
-\caption{PhysioNet 2012 Set A mortality classification (test). Mean $\pm$ 95\% CI over 3 seeds.}
+\caption{PhysioNet 2012 Set A mortality classification (test). Mean $\pm$ 95\% CI over 3 seeds (0,1,2).}
 \label{tab:physio}
 \begin{tabular}{lcc}
 \toprule
 Model & AUROC $\uparrow$ & AUPRC $\uparrow$\\
 \midrule
-GRU (values+mask+$\Delta t$) & 0.808 $\pm$ 0.012 & 0.468 $\pm$ 0.013\\
-LastObsMLP (last obs + mask) & 0.661 $\pm$ 0.008 & 0.266 $\pm$ 0.006\\
+GRU & 0.804 $\pm$ 0.032 & 0.477 $\pm$ 0.059\\
+LastObsMLP & 0.817 $\pm$ 0.063 & 0.485 $\pm$ 0.137\\
+GRU-D & 0.829 $\pm$ 0.034 & 0.499 $\pm$ 0.112\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Failure mode.}
-Performance increases with the amount of observed data per patient, indicating a clear failure mode under heavy missingness.
+We stratify test AUROC by observation-count quartile and compare all three models, highlighting robustness under sparse measurements.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.95\linewidth]{../results/figures/physio_auroc_by_obs_quartile.png}
-\caption{GRU test AUROC stratified by observation-count quartile (fewer observations $\rightarrow$ harder cases).}
+\includegraphics[width=0.95\linewidth]{../results/figures/physio_auroc_by_obs_quartile_models.png}
+\caption{Test AUROC stratified by observation-count quartile (mean $\pm$ 95\% CI over seeds), comparing GRU, LastObsMLP, and GRU-D.}
 \label{fig:physio_obs}
 \end{figure}
+
 \section{Limitations and future work}
 This study is intentionally minimal. Key limitations include:
 \begin{itemize}
@@ -172,4 +173,3 @@ Future work: add time-aware discrete baselines (e.g., $\Delta t$-conditioned Res
 \noindent\textbf{Code and artifacts:} \href{\GithubURL}{\GithubURL} (configs, training logs, summary table, and figures).
 
 \end{document}
-
