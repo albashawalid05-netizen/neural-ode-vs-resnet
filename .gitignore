@@ -38,3 +38,9 @@ paper/*.toc
 paper/*.synctex.gz
 paper/*.tex.bak
 
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+
