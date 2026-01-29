@@ -1,4 +1,23 @@
 # Neural ODEs vs ResNets under Irregular Sampling (Toy Study)
+## PhysioNet 2012 (Windows PowerShell)
+
+### Data layout (not included in repo)
+Place PhysioNet 2012 Set A here:
+data/physionet2012_raw/
+  Outcomes-a.txt
+  set-a/set-a/*.txt
+
+### Install
+pip install -r requirements.txt
+
+### Run
+powershell -ExecutionPolicy Bypass -File .\RUN_PHYSIONET.ps1
+
+### Outputs
+results\tables\physio_summary.csv
+results\figures\physio_auroc_by_obs_quartile_models.png
+results\tables\physio_auroc_by_obs_quartile_models.csv
+
 
 A small, reproducible research artifact comparing a discrete-time **ResNetStep** baseline vs a continuous-time **Neural ODE** under **irregular sampling** and **controlled missingness** on a synthetic damped oscillator dataset.
 
