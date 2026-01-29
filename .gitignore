@@ -29,3 +29,12 @@ mini_paper_clean.tex
 results/preds/
 results/figures/physio_auroc_by_obs_quartile_models.png
 results/tables/physio_auroc_by_obs_quartile_models.csv
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+paper/*.tex.bak
+
