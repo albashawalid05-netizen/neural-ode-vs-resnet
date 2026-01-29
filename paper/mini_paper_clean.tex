@@ -135,21 +135,25 @@ We compare: (i) a GRU baseline; (ii) a LastObsMLP baseline using last observed v
 
 \begin{table}[t]
 \centering
-\caption{PhysioNet 2012 Set A mortality classification (test). Mean $\pm$ 95\% CI over 3 seeds (0,1,2).}
+\caption{PhysioNet 2012 Set A mortality classification (test). Mean $\pm$
+95\% CI over 10 seeds (0--9).}
 \label{tab:physio}
 \begin{tabular}{lcc}
 \toprule
 Model & AUROC $\uparrow$ & AUPRC $\uparrow$\\
 \midrule
-GRU & 0.804 $\pm$ 0.032 & 0.477 $\pm$ 0.059\\
-LastObsMLP & 0.817 $\pm$ 0.063 & 0.485 $\pm$ 0.137\\
-GRU-D & 0.829 $\pm$ 0.034 & 0.499 $\pm$ 0.112\\
-ODE-RNN & 0.709 $\pm$ 0.080 & 0.334 $\pm$ 0.117 \\
+GRU & 0.815 $\pm$ 0.005 & 0.471 $\pm$ 0.006\\
+LastObsMLP & 0.666 $\pm$ 0.002 & 0.270 $\pm$ 0.003\\
+GRU-D & 0.824 $\pm$ 0.015 & 0.458 $\pm$ 0.042\\
+ODE-RNN & 0.702 $\pm$ 0.055 & 0.320 $\pm$ 0.061 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-On PhysioNet 2012, we include an ODE-based baseline (ODE-RNN) alongside strong discrete-time baselines (GRU, GRU-D). Across 3 seeds (95\% CI), GRU-D performs best, while ODE-RNN is less competitive under this training budget, highlighting that handling missingness explicitly can matter more than continuous-time inductive bias in this setting.
+On PhysioNet 2012, we include an ODE-based baseline (ODE-RNN) alongside
+discrete-time baselines (GRU, GRU-D). Across 10 seeds (95\% CI), GRU-D performs best.
+ODE-RNN shows substantially higher variance under the same training budget, indicating sensitivity to initialization and optimization settings in this benchmark.
+
 
 
 \paragraph{Failure mode.}
