@@ -17,6 +17,18 @@ powershell -ExecutionPolicy Bypass -File .\RUN_PHYSIONET.ps1
 results\tables\physio_summary.csv
 results\figures\physio_auroc_by_obs_quartile_models.png
 results\tables\physio_auroc_by_obs_quartile_models.csv
+### Results (PhysioNet 2012, 3 seeds: 0 1 2)
+Metric format: mean ± 95% CI across seeds
+
+| Model      | AUROC          | AUPRC          |
+|-----------|-----------------|----------------|
+| GRU D     | 0.829 ± 0.034   | 0.499 ± 0.112  |
+| LastObsMLP| 0.817 ± 0.063   | 0.485 ± 0.137  |
+| GRU       | 0.804 ± 0.032   | 0.477 ± 0.059  |
+| ODE RNN   | 0.709 ± 0.080   | 0.334 ± 0.117  |
+
+The summary table is saved at results/tables/physio_summary.csv
+A quartile analysis plot is saved at results/figures/physio_auroc_by_obs_quartile_models.png
 
 
 A small, reproducible research artifact comparing a discrete-time **ResNetStep** baseline vs a continuous-time **Neural ODE** under **irregular sampling** and **controlled missingness** on a synthetic damped oscillator dataset.
