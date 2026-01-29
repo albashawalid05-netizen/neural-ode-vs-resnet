@@ -17,15 +17,17 @@ powershell -ExecutionPolicy Bypass -File .\RUN_PHYSIONET.ps1
 results\tables\physio_summary.csv
 results\figures\physio_auroc_by_obs_quartile_models.png
 results\tables\physio_auroc_by_obs_quartile_models.csv
-### Results (PhysioNet 2012, 3 seeds: 0 1 2)
+### Results (PhysioNet 2012, 10 seeds: 0–9)
 Metric format: mean ± 95% CI across seeds
 
 | Model      | AUROC          | AUPRC          |
 |-----------|-----------------|----------------|
-| GRU D     | 0.829 ± 0.034   | 0.499 ± 0.112  |
-| LastObsMLP| 0.817 ± 0.063   | 0.485 ± 0.137  |
-| GRU       | 0.804 ± 0.032   | 0.477 ± 0.059  |
-| ODE RNN   | 0.709 ± 0.080   | 0.334 ± 0.117  |
+| GRU D     | 0.824 ± 0.015   | 0.458 ± 0.042  |
+| GRU       | 0.815 ± 0.005   | 0.471 ± 0.006  |
+| ODE RNN   | 0.702 ± 0.055   | 0.320 ± 0.061  |
+| LastObsMLP| 0.666 ± 0.002   | 0.270 ± 0.003  |
+
+Note: ODE RNN shows higher variance across seeds under the same training budget, while the simple LastObsMLP baseline underperforms as expected.
 
 The summary table is saved at results/tables/physio_summary.csv
 A quartile analysis plot is saved at results/figures/physio_auroc_by_obs_quartile_models.png
