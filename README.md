@@ -33,3 +33,20 @@ python -m src.train --config .\configs\ablation_solver_dopri5.yaml
 python -m src.train --config .\configs\ablation_missing_0.yaml
 python -m src.train --config .\configs\ablation_missing_60.yaml
 
+---
+
+## Real data upgrade: PhysioNet 2012 (irregular ICU time series)
+
+This repo now includes a real-world irregularly-sampled + missing clinical time-series benchmark (PhysioNet/CinC 2012, Set A) for **binary mortality classification**.
+
+### How to download the dataset (Windows / PowerShell)
+```powershell
+cd data\physionet2012_raw
+$setA = "https://archive.physionet.org/pn3/challenge/2012/set-a.zip"
+$outA = "https://archive.physionet.org/pn3/challenge/2012/Outcomes-a.txt"
+Invoke-WebRequest -Uri $setA -OutFile "set-a.zip"
+Invoke-WebRequest -Uri $outA -OutFile "Outcomes-a.txt"
+Expand-Archive -Path ".\set-a.zip" -DestinationPath ".\set-a" -Force
+# If files end up nested in set-a\set-a, move them one level up:
+Move-Item .\set-a\set-a\*.txt .\set-a\ -ErrorAction SilentlyContinue
+Remove-Item .\set-a\set-a -Recurse -Force -ErrorAction SilentlyContinue

@@ -66,3 +66,56 @@ class NeuralODEModel(nn.Module):
         # odeint returns [T, B, 2]
         traj = odeint(self.func, x0, t, method=self.solver, rtol=self.rtol, atol=self.atol)
         return traj.permute(1, 0, 2)
+import torch
+import torch.nn as nn
+
+class GRUClassifier(nn.Module):
+    def __init__(self, d_in: int, hidden: int = 128, layers: int = 1, dropout: float = 0.0):
+        super().__init__()
+        self.rnn = nn.GRU(
+            input_size=2 * d_in + 1,
+            hidden_size=hidden,
+            num_layers=layers,
+            batch_first=True,
+            dropout=dropout if layers > 1 else 0.0,
+        )
+        self.head = nn.Sequential(
+            nn.Linear(hidden, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, 1),
+        )
+
+    def forward(self, times, x, mask, lengths):
+        dt = torch.zeros_like(times)
+        dt[:, 1:] = times[:, 1:] - times[:, :-1]
+        dt = dt.unsqueeze(-1)
+
+        inp = torch.cat([x, mask, dt], dim=-1)
+
+        packed = nn.utils.rnn.pack_padded_sequence(
+            inp, lengths.cpu(), batch_first=True, enforce_sorted=False
+        )
+        _, h = self.rnn(packed)
+        h_last = h[-1]
+        return self.head(h_last)
+class LastObsMLP(nn.Module):
+    """
+    Baseline بسيط: ناخذ آخر قياس لكل feature (مع mask) -> MLP للتصنيف.
+    """
+    def __init__(self, d_in: int, hidden: int = 128):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(2 * d_in, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, 1),
+        )
+
+    def forward(self, times, x, mask, lengths):
+        # x/mask: [B,T,D]
+        # استخدم آخر timestep فعلي حسب lengths
+        B, T, D = x.shape
+        idx = (lengths - 1).clamp_min(0)  # [B]
+        last_x = x[torch.arange(B), idx]       # [B,D]
+        last_m = mask[torch.arange(B), idx]    # [B,D]
+        feat = torch.cat([last_x, last_m], dim=-1)  # [B,2D]
+        return self.net(feat)
