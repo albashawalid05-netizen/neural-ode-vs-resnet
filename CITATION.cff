@@ -1,0 +1,8 @@
+﻿cff-version: 1.2.0
+message: "If you use this work, please cite the mini paper in paper/mini_paper_clean.pdf."
+title: "Neural ODEs vs ResNets under Irregular Sampling: Toy Study and PhysioNet 2012 Benchmark"
+authors:
+  - family-names: "Albasha"
+    given-names: "Walid"
+date-released: "2026-01-30"
+url: "https://github.com/albashawalid05-netizen/neural-ode-vs-resnet"
