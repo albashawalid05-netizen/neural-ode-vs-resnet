@@ -43,4 +43,6 @@ paper/*.tex.bak
 paper/*.aux
 paper/*.log
 paper/*.out
+results/
+
 
