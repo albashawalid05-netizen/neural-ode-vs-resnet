@@ -91,4 +91,4 @@ python -m src.run_physio_suite --data_root data/physionet2012_raw --seeds 0 1 2 
 ## Paper
 mini paper (includes toy study and PhysioNet section): paper/mini_paper_clean.pdf
 Source: paper/mini_paper_clean.tex
-
+Notes: NOTES.md
