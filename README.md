@@ -86,7 +86,7 @@ Remove-Item .\set-a\set-a -Recurse -Force -ErrorAction SilentlyContinue
 ## PhysioNet 2012 (Set A) suite (GRU / LastObsMLP / GRU-D)
 
 ```powershell
-python -m src.run_physio_suite --data_root data/physionet2012_raw --seeds 0 1 2 --epochs 10 --batch_size 64 --hidden 128
+python -m src.run_physio_suite --data_root data/physionet2012_raw --seeds 0 1 2 3 4 5 6 7 8 9 --epochs 10 --batch_size 64 --hidden 128
 
 ## Paper
 mini paper (includes toy study and PhysioNet section): paper/mini_paper_clean.pdf
